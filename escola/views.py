@@ -2,8 +2,11 @@ from escola.models import Estudante,Curso, Matricula
 from escola.serializers import EstudanteSerializer,CursoSerializer, MatriculaSerializer,ListaMatriculasEstudanteSerializer,ListaMatriculasCursoSerializer, EstudanteSerializerV2
 from rest_framework import viewsets, generics, filters
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import IsAuthenticated
+
 
 class EstudanteViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = Estudante.objects.all().order_by("id")
     #serializer_class = EstudanteSerializer
     filter_backends = [DjangoFilterBackend,filters.OrderingFilter,filters.SearchFilter]

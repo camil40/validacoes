@@ -11,7 +11,7 @@ class ModelEstudanteSerializersTestCase(TestCase):
             data_nascimento = "2000-01-01",
             celular = "84 98765-4321"
         )
-        self.estudante_serializer = EstudanteSerializer(self.estudante)
+        self.estudante_serializer = EstudanteSerializer(instance=self.estudante)
     def test_verifica_atributos_de_estudantes(self):
         '''Testa os atributos de um estudante quando ele é criado na base de dabos'''
         self.assertEqual(self.estudante.nome, "Teste do modelo estudante")
@@ -31,7 +31,7 @@ class ModelCursoSerializersTestCase(TestCase):
             descricao = "Teste do modelo curso",
             nivel = "B"
         )
-        self.curso_serializer = CursoSerializer(self.curso)
+        self.curso_serializer = CursoSerializer(instance=self.curso)
     def test_verifica_atributos_de_curso(self):
         '''Testa os atributos de um curso quando ele é criado na base de dados'''
         self.assertEqual(self.curso.codigo, "F01")
@@ -61,7 +61,7 @@ class ModelMatriculaSerializersTestCase(TestCase):
             curso=self.curso,
             periodo="M"
         )
-        self.matricula_serializer = MatriculaSerializer(self.matricula)
+        self.matricula_serializer = MatriculaSerializer(instance=self.matricula)
     def test_verifica_atributos_de_matricula(self):
         '''Testa os atributos de um curso quando ele é criado na base de dados'''
         self.assertEqual(self.matricula.estudante, self.estudante)
