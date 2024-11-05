@@ -1,8 +1,10 @@
+'''Testes de autenticação'''
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework.test import APITestCase
 from django.urls import reverse
 from rest_framework import status
+from escola.models import Estudante
 
 class AuthenticationUserTestCase(APITestCase):
     def setUp(self):
@@ -28,14 +30,20 @@ class AuthenticationUserTestCase(APITestCase):
 class AuthenticationUserAcessTest(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='teste',password='teste')
-        login_successful = self.client.login(username='teste', password='teste') 
-        print('Login successful:', login_successful)
+        self.url = reverse('Estudantes-list')
+        self.client.force_authenticate(user=self.user)
+        self.estudante = Estudante.objects.create(
+            nome = 'Teste estudante UM',
+            email = 'testeestudante01@gmail.com',
+            cpf ='68224431002',
+            data_nascimento='2024-01-02',
+            celular = '86 99999-9999'
+        )
 
     def test_user_logado_tem_acesso_a_rota_estudantes(self):
         '''Teste que verifica se o usuario logado tem acessoa arota'''
-        url = reverse('Estudantes-list')
-        response = self.client.get(url)
-        print('Response status code:', response.status_code)
+        self.url = reverse('Estudantes-list')
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_user_nao_logado_nao_tem_acesso_a_rota_estudantes(self):

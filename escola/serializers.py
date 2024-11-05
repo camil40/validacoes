@@ -1,3 +1,4 @@
+'''Organiza os dados que antes estavam como json, para mandar pro front'''
 from rest_framework import serializers
 from escola.models import Estudante, Curso, Matricula
 import re
@@ -47,11 +48,15 @@ class CursoSerializer(serializers.ModelSerializer):
 class MatriculaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Matricula
-        exclude = []
-    def validate_periodo(self, dados):
-        if periodo_invalido(dados['periodo']):
-            raise serializers.ValidationError("Escolha entre 'B' (Básico), 'I' (Intermediário) ou 'A' (Avançado)")
-        return dados
+        fields = '__all__'
+
+    def validate_periodo(self, value):
+        if not isinstance(value, str):
+            raise serializers.ValidationError("Periodo deve ser uma string.")
+        if value not in ['M', 'V', 'N']:
+            raise serializers.ValidationError("Periodo inválido.")
+        return value
+
 
 class ListaMatriculasEstudanteSerializer(serializers.ModelSerializer):
     curso = serializers.ReadOnlyField(source='curso.descricao')

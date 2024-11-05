@@ -1,3 +1,4 @@
+'''Testes dos atributos das clssses da models'''
 from django.test import TestCase
 from escola.models import Estudante, Curso, Matricula
 
